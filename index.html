@@ -104,6 +104,46 @@
       50% { transform: rotateX(90deg); opacity: 0; }
       100% { transform: rotateX(0deg); opacity: 1; }
     }
+
+    /* =========================================================
+       AJUSTES PARA CELULAR: FOTO Y PALITOS DESPEJADOS
+       ========================================================= */
+    @media (max-width: 600px) {
+      /* 1. Oculta los palos de brocheta para que no crucen las frases */
+      [class*="amber-"], 
+      [class*="stick"], 
+      .skewer {
+        display: none !important;
+      }
+
+      /* 2. Hace la Polaroid más compacta y la sube para no tapar el marco de texto */
+      .polaroid, 
+      .polaroid-card, 
+      [class*="polaroid"],
+      div:has(> img[alt*="piloto"]),
+      div:has(> img[src*="IMG_"]) {
+        transform: scale(0.78) rotate(-6deg) !important;
+        top: 24% !important;
+        left: 2% !important;
+        z-index: 15 !important;
+      }
+
+      /* 3. Rota la foto 90° para que quede vertical y bien encuadrada */
+      img[src*="IMG_"],
+      .polaroid img,
+      [class*="polaroid"] img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        transform: rotate(90deg) scale(1.35) !important;
+      }
+
+      /* 4. Asegura que el papel negro y las frases queden al frente */
+      #bouquet-paper {
+        position: relative !important;
+        z-index: 30 !important;
+      }
+    }
   </style>
 
 </head>
