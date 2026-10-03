@@ -116,13 +116,34 @@
         display: none !important;
       }
 
-
       /* 4. Asegura que el papel negro y las frases queden al frente */
       #bouquet-paper {
         position: relative !important;
         z-index: 30 !important;
       }
+    
+    /* RESCATE DEL BOTÒN */
+    #btn-surprise,
+    button[onclick*="surprise"],
+    button:has(.fa-wand-magic-sparkles),
+    .btn-magic {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 9999 !important;
+    margin: 18px auto 45px auto !important; /* Margen inferior extra para que la barra del iPhone no lo tape */
+    max-width: 90% !important;
     }
+    
+    /* Evita que el contenedor corte el botón abajo */
+    body, html {
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100% !important;
+    padding-bottom: 60px !important;
+    }
+          
   </style>
 
 </head>
