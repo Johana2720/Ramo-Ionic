@@ -106,41 +106,51 @@
     }
 
     /* =========================================================
-    AJUSTES PARA CELULAR: FOTO, PALITOS Y BOTÓN VISIBLE
-    ========================================================= */
+     AJUSTES PARA CELULAR: BOTÓN Y PLACA MÁS ARRIBA Y COMPACTOS
+     ========================================================= */
     @media (max-width: 600px) {
-    /* 1. Oculta los palos de brocheta usando sus IDs sin tocar colores */
-    #car-stick-1,
-    #car-stick-2,
-    .skewer-stick,
-    .skewer-line {
-    display: none !important;
+     /* 1. Oculta los palos de madera */
+     #car-stick-1,
+     #car-stick-2,
+     .skewer-stick,
+     .skewer-line {
+     display: none !important;
+     }
+    
+     /* 2. Compacta el papel negro para que no ocupe tanto espacio vertical */
+     #bouquet-paper {
+     position: relative !important;
+     z-index: 30 !important;
+     height: auto !important;
+     min-height: 180px !important;
+     padding-bottom: 8px !important;
+     margin-bottom: 0px !important;
+     }
+    
+     /* 3. Reduce espacios sobrantes entre el moño, las placas y el botón */
+     .relative.z-30.w-full {
+     margin-bottom: 0 !important;
+     }
+    
+     /* 4. Sube el botón para que quede cerquita del ramo */
+     button {
+     display: inline-flex !important;
+     visibility: visible !important;
+     opacity: 1 !important;
+     position: relative !important;
+     z-index: 99999 !important;
+     margin: 10px auto 35px auto !important; /* Margen superior reducido de 20px a solo 10px */
+     transform: scale(0.95) !important; /* Ligeramente más compacto para pantalla chica */
+     }
     }
     
-    /* 2. Asegura que el papel negro y frases queden al frente */
-    #bouquet-paper {
-    position: relative !important;
-    z-index: 30 !important;
-    }
-    
-    /* 3. RESCATE DEL BOTÓN: Forzado a mostrarse y con margen */
-    button {
-    display: inline-flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: relative !important;
-    z-index: 99999 !important;
-    margin: 20px auto 60px auto !important;
-    }
-    }
-    
-    /* 4. Permite deslizar libremente en la pantalla del celular */
+    /* 5. Scroll suave sin tanto espacio muerto al final */
     html, body {
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    padding-bottom: 90px !important;
+     height: auto !important;
+     min-height: 100vh !important;
+     overflow-y: auto !important;
+     -webkit-overflow-scrolling: touch !important;
+     padding-bottom: 30px !important; /* Reducido de 90px a solo 30px */
     }
 
           
