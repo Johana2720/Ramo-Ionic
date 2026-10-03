@@ -11,6 +11,15 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
+        /* Fuerza a que cualquier palo quede detrás de las frases y papeles */
+    [id*="stick"], [class*="stick"], [class*="skewer"] {
+      z-index: 1 !important;
+    }
+    
+    #bouquet-paper, #bouquet-paper * {
+      z-index: 30;
+    }
+
     body {
       font-family: 'Outfit', sans-serif;
       background-color: #05070c;
@@ -105,6 +114,38 @@
       100% { transform: rotateX(0deg); opacity: 1; }
     }
   </style>
+
+<style>
+    /* Ajustes especiales para celular */
+    @media (max-width: 600px) {
+      /* 1. Hace la polaroid más compacta y la sube para no tapar el texto */
+      .polaroid, 
+      .polaroid-card, 
+      [class*="polaroid"] {
+        transform: scale(0.85) rotate(-6deg) !important;
+        top: 26% !important;
+        left: 4% !important;
+      }
+
+      /* 2. Rota la imagen 90° para que quede derecha */
+      .polaroid img,
+      .polaroid-card img,
+      [class*="polaroid"] img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        transform: rotate(90deg) scale(1.3) !important;
+      }
+
+      /* 3. Oculta los palos de madera en celular para que no estorben */
+      .stick, 
+      .skewer-line, 
+      [class*="stick"] {
+        display: none !important;
+      }
+    }
+  </style>
+
 </head>
 <body class="bg-luxury-pattern min-h-screen text-slate-100 flex flex-col justify-between items-center py-6 px-4 selection:bg-rose-500 selection:text-white">
 
