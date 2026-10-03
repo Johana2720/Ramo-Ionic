@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para el amor de mi vida, mi Josslong • Ramo Hot Wheels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Space+Grotesk:wght@500;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #05070c;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+    .font-tech { font-family: 'Space Grotesk', sans-serif; }
+    .font-serif-romance { font-family: 'Playfair Display', serif; }
+
+    /* Luxury Night & Circuit Theme */
+    .bg-luxury-pattern {
+      background-color: #060911;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(14, 165, 233, 0.15), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(225, 29, 72, 0.14), transparent 40%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+    }
+
+    /* Wrap paper style (Matte black & luxury gold borders) */
+    .wrap-card-black {
+      background: linear-gradient(155deg, #181920 0%, #0d0f14 55%, #191c24 100%);
+      box-shadow: inset 0 0 55px rgba(0,0,0,0.9), 0 20px 45px rgba(0,0,0,0.85);
+      border-top: 1.5px solid rgba(250, 204, 21, 0.4);
+      border-left: 2px solid rgba(250, 204, 21, 0.5);
+      border-right: 2px solid rgba(250, 204, 21, 0.5);
+      border-bottom: 2px solid rgba(250, 204, 21, 0.4);
+    }
+
+    /* Fairy LED lights animations */
+    @keyframes warmGlow {
+      0%, 100% {
+        opacity: 0.95;
+        filter: drop-shadow(0 0 10px #ffe57f) drop-shadow(0 0 20px #f59e0b);
+      }
+      50% {
+        opacity: 0.35;
+        filter: drop-shadow(0 0 3px #ffe57f);
+      }
+    }
+    .fairy-lamp {
+      animation: warmGlow 2.3s ease-in-out infinite;
+    }
+
+    /* Ioniq LED Taillights Pulse */
+    @keyframes ioniqGlow {
+      0%, 100% { filter: drop-shadow(0 0 4px #ef4444) drop-shadow(0 0 14px #dc2626); }
+      50% { filter: drop-shadow(0 0 1.5px #991b1b); opacity: 0.88; }
+    }
+    .taillight-active {
+      animation: ioniqGlow 0.95s ease-in-out infinite alternate;
+    }
+
+    /* Floating subtle animation for the whole bouquet */
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+    .bouquet-card-float {
+      animation: cardFloat 5.8s ease-in-out infinite;
+    }
+
+    /* Car Jump & Shake */
+    .car-jump {
+      animation: carHop 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes carHop {
+      0% { transform: scale(1) translateY(0); }
+      40% { transform: scale(1.14) translateY(-18px) rotate(-2deg); }
+      75% { transform: scale(0.96) translateY(2px) rotate(1deg); }
+      100% { transform: scale(1) translateY(0); }
+    }
+
+    /* Floral Bloom Morph Animation */
+    @keyframes bloomIn {
+      0% { transform: translate(-50%, 0) scale(0.4) rotate(-15deg); opacity: 0; filter: blur(4px); }
+      70% { transform: translate(-50%, 0) scale(1.18) rotate(3deg); opacity: 1; filter: blur(0px); }
+      100% { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: 1; }
+    }
+    .flower-bloom {
+      animation: bloomIn 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    /* License plate flip transition */
+    .plate-flip {
+      animation: flipPlate 0.5s ease-in-out;
+    }
+    @keyframes flipPlate {
+      0% { transform: rotateX(0deg); opacity: 1; }
+      50% { transform: rotateX(90deg); opacity: 0; }
+      100% { transform: rotateX(0deg); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-luxury-pattern min-h-screen text-slate-100 flex flex-col justify-between items-center py-6 px-4 selection:bg-rose-500 selection:text-white">
+
+  <!-- Ambient floating flower petals canvas -->
+  <canvas id="petals-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-45"></canvas>
+
+  <!-- CARD MAIN WRAPPER -->
+  <div class="relative z-10 w-full max-w-xl mx-auto flex flex-col items-center">
+    
+    <!-- TOP TITLE HEADER -->
+    <div class="text-center mb-3 sm:mb-4 space-y-1">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/80 border border-yellow-400/40 text-yellow-300 text-xs font-bold uppercase tracking-widest shadow-lg shadow-yellow-500/10 backdrop-blur-md">
+        <span>✨</span> ¡FELIZ DÍA AL MEJOR NOVIO DEL MUNDO ! ❤️ 
+      </div>
+      <h1 class="font-serif-romance text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-rose-100 to-amber-200 drop-shadow-md">
+        Para el amor de mi vida, mi Josslong
+      </h1>
+      <p class="text-xs text-cyan-300 font-tech uppercase tracking-widest flex items-center justify-center gap-1.5 font-bold">
+        <span>⚡</span> Este ramo es con todo mi amor...
+      </p>
+    </div>
+
+    <!-- MAIN BOUQUET PRESENTATION STAGE -->
+    <div class="relative w-full aspect-[4/5.5] sm:aspect-[4/5.3] rounded-[36px] bg-gradient-to-b from-slate-900/90 via-black to-slate-950 border border-yellow-400/30 shadow-[0_0_50px_rgba(250,204,21,0.18)] p-4 sm:p-6 overflow-hidden flex flex-col items-center justify-end select-none">
+      
+      <!-- Romantic Light Aura in background -->
+      <div id="ambient-aura" class="absolute top-10 w-80 h-80 rounded-full bg-rose-600/15 blur-3xl pointer-events-none transition-colors duration-700"></div>
+      <div class="absolute top-28 w-60 h-60 rounded-full bg-cyan-500/10 blur-2xl pointer-events-none"></div>
+
+      <!-- LED Fairy Lights string overlay -->
+      <div id="fairy-lights-overlay" class="absolute inset-0 pointer-events-none z-30">
+        <div class="absolute top-16 left-20 w-3.5 h-3.5 rounded-full bg-yellow-200 fairy-lamp shadow-[0_0_14px_#fde047]"></div>
+        <div class="absolute top-28 right-16 w-3 h-3 rounded-full bg-amber-300 fairy-lamp shadow-[0_0_14px_#f59e0b]" style="animation-delay: 0.6s;"></div>
+        <div class="absolute top-44 left-32 w-3.5 h-3.5 rounded-full bg-yellow-100 fairy-lamp shadow-[0_0_12px_#ffffff]" style="animation-delay: 1.1s;"></div>
+        <div class="absolute top-52 right-24 w-3.5 h-3.5 rounded-full bg-cyan-200 fairy-lamp shadow-[0_0_14px_#38bdf8]" style="animation-delay: 1.7s;"></div>
+        <div class="absolute top-24 left-44 w-3 h-3 rounded-full bg-amber-100 fairy-lamp shadow-[0_0_12px_#fef08a]" style="animation-delay: 0.3s;"></div>
+
+        <svg class="absolute inset-0 w-full h-full opacity-45 pointer-events-none stroke-yellow-200/50 fill-none" stroke-width="1.2">
+          <path d="M 90 110 Q 210 50 280 120 T 170 230 T 270 300" />
+          <path d="M 310 110 Q 220 200 130 190 T 220 270" />
+        </svg>
+      </div>
+
+      <!-- BOUQUET ASSEMBLY -->
+      <div id="bouquet-structure" class="relative w-full h-full flex flex-col items-center justify-end z-20 bouquet-card-float">
+        
+        <!-- FLOWER BOUQUET LAYER (Changes dynamically with "Sorpréndeme!") -->
+        <div id="flower-cluster" class="relative z-10 w-full h-80 flex items-center justify-center">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- HYUNDAI IONIQ BLANCO HYBRID CARS ON WOOD SKEWERS -->
+        <div id="ioniq-cluster" class="absolute inset-x-0 top-3 bottom-28 z-20 pointer-events-none">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- CUSTOM POLAROID PHOTO -->
+        <div onclick="tapPolaroid()" class="absolute top-48 sm:top-52 left-4 sm:left-6 z-30 cursor-pointer bg-white p-2 pb-3.5 rounded-xl shadow-2xl border border-gray-300 transform -rotate-6 hover:rotate-0 hover:scale-105 transition-all w-28 sm:w-32 text-center pointer-events-auto group">
+          <!-- Mini Wood Clip with Gold Accent -->
+          <div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2 w-4 h-6 bg-amber-700 rounded-sm shadow-md border border-amber-900 flex flex-col items-center justify-between py-0.5">
+            <span class="w-2.5 h-0.5 bg-yellow-200 rounded"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+          </div>
+
+          <!-- Couple's Photo oriented correctly -->
+          <div class="w-full aspect-square bg-slate-900 rounded-lg overflow-hidden mb-1.5 border border-gray-200 relative">
+            <img src="IMG_0395.jpeg" 
+                 alt="Mi Piloto y Yo" 
+                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                 style="transform: rotate(90deg) scale(1.35); transform-origin: center center;"
+                 onerror="this.style.transform='none'; this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=400&q=80';">
+          </div>
+          <p class="font-serif-romance text-[9px] sm:text-[10px] font-bold text-gray-800 leading-tight">
+            Mi piloto y Yo ❤️
+          </p>
+        </div>
+
+        <!-- BOUQUET LUXURY MATTE BLACK WRAPPING PAPER -->
+        <div id="bouquet-paper" class="relative z-25 w-76 sm:w-88 h-60 wrap-card-black rounded-b-[40px] transform -translate-y-4 flex flex-col items-center justify-between p-4 overflow-hidden shadow-2xl">
+          <!-- Golden Sheen and Creases -->
+          <div class="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-yellow-400/10 to-transparent pointer-events-none"></div>
+          <div class="absolute top-0 left-8 bottom-0 w-[1px] bg-yellow-400/20 transform -rotate-12"></div>
+          <div class="absolute top-0 right-8 bottom-0 w-[1px] bg-yellow-400/20 transform rotate-12"></div>
+
+          <!-- Upper Official Seal on Paper -->
+          <div class="relative z-10 mt-1 flex flex-col items-center">
+            <div class="px-3 py-1 rounded-full bg-black/90 border border-yellow-400/70 shadow-lg flex items-center gap-1.5">
+              <span class="text-xs">⚡</span>
+              <span class="text-[9px] font-tech font-bold text-yellow-300 tracking-wider uppercase" id="flower-theme-badge">
+                ROSAS ROJAS ETERNAS
+              </span>
+            </div>
+          </div>
+
+          <!-- LOWER SECTION AT THE RIBBON: Requested Dedicated Quote -->
+          <div class="relative z-30 w-full flex flex-col items-center -mb-3 space-y-1">
+            
+            <!-- Plaque with the requested text -->
+            <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-yellow-400/70 px-4 py-2 rounded-xl shadow-xl max-w-[270px] text-center transform hover:scale-105 transition-transform">
+              <div class="w-2 h-2 rounded-full bg-rose-500 mx-auto -mt-3 mb-1 shadow-[0_0_8px_#f43f5e]"></div>
+              <p class="font-serif-romance text-xs sm:text-[13px] font-bold text-yellow-200 leading-snug">
+                "¡Siempre quiero ir de copiloto contigo! 🏁💖"
+              </p>
+              <div class="flex items-center justify-center gap-1.5 mt-0.5">
+                <span class="text-[9px] font-tech text-rose-400 font-bold uppercase tracking-wider">Para mi Josslong</span>
+                <span class="text-[10px]">❤️</span>
+              </div>
+            </div>
+
+            <!-- Big Satin Silk Ribbon / Moño de Seda Dorado -->
+            <div class="w-32 h-14 flex items-center justify-center filter drop-shadow-[0_6px_8px_rgba(0,0,0,0.85)] -mt-1">
+              <svg viewBox="0 0 160 80" class="w-full h-full fill-yellow-400 stroke-yellow-200 stroke-1">
+                <!-- Left Loop -->
+                <path d="M 80 40 C 40 10, 10 20, 15 45 C 20 65, 55 60, 80 40 Z" />
+                <!-- Right Loop -->
+                <path d="M 80 40 C 120 10, 150 20, 145 45 C 140 65, 105 60, 80 40 Z" />
+                <!-- Center Knot -->
+                <circle cx="80" cy="40" r="10" class="fill-amber-500 stroke-yellow-300" />
+                <!-- Ribbon Tails -->
+                <path d="M 74 46 Q 58 72 48 82 L 62 82 Q 74 62 80 49 Z" class="fill-amber-600" />
+                <path d="M 86 46 Q 102 72 112 82 L 98 82 Q 86 62 80 49 Z" class="fill-amber-600" />
+              </svg>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Flower stems peeking out from the bottom -->
+        <div class="relative z-10 w-24 h-8 flex justify-center space-x-2 -mt-2">
+          <span class="w-1.5 h-full bg-emerald-950 rounded-b"></span>
+          <span class="w-1.5 h-full bg-amber-900 rounded-b"></span>
+          <span class="w-1.5 h-full bg-emerald-900 rounded-b"></span>
+          <span class="w-1.5 h-full bg-amber-800 rounded-b"></span>
+        </div>
+
+      </div>
+
+      <!-- Speech Bubble Pop-up when car is touched -->
+      <div id="speech-bubble" class="absolute bottom-24 z-40 bg-slate-950/95 text-white px-4 py-2.5 rounded-2xl shadow-2xl border-2 border-yellow-400 text-xs font-bold transform transition-all duration-300 scale-0 origin-bottom pointer-events-none max-w-xs text-center font-tech">
+        <p id="speech-text" class="text-yellow-300">⚡ ¡Te amo, mi Josslong! Eres mi piloto favorito ❤️</p>
+      </div>
+
+    </div>
+
+    <!-- INTERACTION AREA -->
+    <div class="mt-4 sm:mt-5 w-full flex flex-col items-center space-y-3">
+      
+      <!-- THE REQUESTED "¡Sorpréndeme! ✨" BUTTON: Transforms flowers + cycle plates + audio & confetti -->
+      <button onclick="triggerSurpriseEffect()" class="relative group px-8 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 via-rose-500 to-amber-400 text-slate-950 font-tech font-extrabold text-sm sm:text-base uppercase tracking-wider shadow-[0_0_30px_rgba(250,204,21,0.35)] hover:shadow-[0_0_45px_rgba(244,63,94,0.5)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+        <span class="text-xl group-hover:rotate-45 transition-transform">✨</span>
+        <span>¡Sorpréndeme!</span>
+        <span class="text-xl group-hover:rotate-45 transition-transform">🚗</span>
+      </button>
+
+      <!-- Plate indicator info & clickable pill -->
+      <div class="flex items-center justify-center gap-2 text-xs text-gray-300">
+        <span class="text-yellow-400 font-bold">Placa actual:</span>
+        <button onclick="nextPlate()" class="font-tech font-bold px-2.5 py-0.5 rounded-md bg-slate-900 border border-yellow-400/50 text-cyan-300 hover:border-yellow-300 transition flex items-center gap-1 shadow-sm">
+          <span id="current-plate-text">Josslong</span>
+          <span class="text-[10px] text-gray-400">↻</span>
+        </button>
+        <span class="text-[11px] text-gray-400">(Toca para cambiarla)</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    /* LICENSE PLATES SPECIFIED BY THE USER */
+    const USER_PLATES = ["Josslong", "Mi amor", "Mi Navita", "25012024"];
+    let plateIndex = 0;
+
+    /* FLOWER THEMES CYCLED BY "¡SORPRÉNDEME!" */
+    const FLOWER_THEMES = [
+      {
+        id: 'roses',
+        name: 'ROSAS, ¡Para mi futuro esposo! 🌹',
+        primaryEmoji: '🌹',
+        accentEmoji: '🌺',
+        auraColor: 'rgba(225, 29, 72, 0.18)',
+        confettiColors: ['#f43f5e', '#e11d48', '#fb7185', '#ffffff'],
+        petalColor: '#f43f5e',
+        tagline: '🌹🌹🌹🌹 '
+      },
+      {
+        id: 'sunflowers',
+        name: 'GIRASOLES... ¡Para quien despierta todas mis emociones!🌻',
+        primaryEmoji: '🌻',
+        accentEmoji: '🌼',
+        auraColor: 'rgba(234, 179, 8, 0.22)',
+        confettiColors: ['#facc15', '#eab308', '#ca8a04', '#ffffff'],
+        petalColor: '#facc15',
+        tagline: ' 🌻🌻🌻🌻'
+      },
+      {
+        id: 'yellow_roses',
+        name: 'FLORES AMARILLAs ¡Radiantes, como tu sonrisa My Navita! ',
+        primaryEmoji: '💛',
+        accentEmoji: '🏵️',
+        auraColor: 'rgba(250, 204, 21, 0.25)',
+        confettiColors: ['#fde047', '#facc15', '#fbbf24', '#ffffff'],
+        petalColor: '#fde047',
+        tagline: ' 💛💛💛💛'
+      },
+      {
+        id: 'tulips',
+        name: 'LIRIOS, ¡Para mi Delirio más hermoso!🌷',
+        primaryEmoji: '🌷',
+        accentEmoji: '🌸',
+        auraColor: 'rgba(244, 114, 182, 0.2)',
+        confettiColors: ['#f472b6', '#ec4899', '#fbcfe8', '#ffffff'],
+        petalColor: '#f472b6',
+        tagline: ' 🌷🌷🌷🌷'
+      }
+    ];
+    let flowerThemeIndex = 0;
+
+    /* COPILOT DEDICATIONS */
+    const COPILOT_MESSAGES = [
+      "⚡ ¡Mi motor ruge por ti, mi Josslong!",
+      "🚗 ¡Siempre quiero ir a tu lado manejando! 🏁💖",
+      "🤍 ¡El Ioniq más hermoso porque tú lo manejas, mi Navita!",
+      "🔋 25-01-2024: La mejor fecha y la mejor vuelta de nuestras vidas.",
+      "✨ ¡No hay viaje largo si voy a tu lado, mi amor!",
+      "❤️ ¡Feliz Día del Novio al amor de mi vida!"
+    ];
+
+    /* WEB AUDIO SYNTHESIZER: Motor Eléctrico Ioniq + Bocina Romántica */
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playHybridAccelerationSound() {
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const now = ctx.currentTime;
+        const dur = 1.2;
+
+        const oscEV = ctx.createOscillator();
+        const oscGas = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        oscEV.type = 'sine';
+        oscEV.frequency.setValueAtTime(160, now);
+        oscEV.frequency.exponentialRampToValueAtTime(480, now + 0.35);
+        oscEV.frequency.exponentialRampToValueAtTime(290, now + dur);
+
+        oscGas.type = 'triangle';
+        oscGas.frequency.setValueAtTime(80, now);
+        oscGas.frequency.exponentialRampToValueAtTime(175, now + 0.45);
+        oscGas.frequency.exponentialRampToValueAtTime(100, now + dur);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(500, now);
+
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.25, now + 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+        oscEV.connect(filter);
+        oscGas.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscEV.start(now);
+        oscGas.start(now);
+        oscEV.stop(now + dur);
+        oscGas.stop(now + dur);
+      } catch (e) {
+        console.warn('Audio error:', e);
+      }
+    }
+
+    function playRomanticHorn() {
+      try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const now = ctx.currentTime;
+        const playTone = (time, freq1, freq2) => {
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc1.type = 'triangle';
+          osc2.type = 'sine';
+          osc1.frequency.setValueAtTime(freq1, time);
+          osc2.frequency.setValueAtTime(freq2, time);
+
+          gain.gain.setValueAtTime(0.18, time);
+          gain.gain.exponentialRampToValueAtTime(0.001, time + 0.14);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start(time);
+          osc2.start(time);
+          osc1.stop(time + 0.15);
+          osc2.stop(time + 0.15);
+        };
+
+        playTone(now, 440, 554);        // Pip
+        playTone(now + 0.16, 440, 554); // Pip
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    /**
+     * Exact Hyundai Ioniq Blanco Vector matching the user's reference photo:
+     * - Hatchback split-window design
+     * - Aerodynamic black spoiler with third brake light
+     * - Triangular taillight blades with red LED guides
+     * - Hyundai chrome badge and I O N I Q centered letters
+     * - Lower charcoal gray diffuser with vertical reflectors
+     * - Customizable plate: Josslong / Mi amor / Mi Navita / 25012024
+     */
+    function getHyundaiIoniqSVG(plateText) {
+      return `
+        <svg viewBox="0 0 280 180" class="w-full h-auto filter drop-shadow-[0_14px_16px_rgba(0,0,0,0.92)]">
+          <defs>
+            <linearGradient id="ioniqWhiteGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="50%" stop-color="#f8fafc"/>
+              <stop offset="85%" stop-color="#e2e8f0"/>
+              <stop offset="100%" stop-color="#cbd5e1"/>
+            </linearGradient>
+
+            <linearGradient id="groundShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#000000" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+            </linearGradient>
+
+            <linearGradient id="smokedWindow" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0f172a"/>
+              <stop offset="50%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#020617"/>
+            </linearGradient>
+
+            <linearGradient id="diffuserPlastic" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#334155"/>
+              <stop offset="40%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+
+            <linearGradient id="chromeEmblem" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#e2e8f0"/>
+              <stop offset="50%" stop-color="#ffffff"/>
+              <stop offset="100%" stop-color="#94a3b8"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Contact shadow under car -->
+          <ellipse cx="140" cy="158" rx="108" ry="11" fill="url(#groundShadow)"/>
+
+          <!-- Left Rear Tire in perspective -->
+          <g transform="translate(42, 94)">
+            <ellipse cx="10" cy="38" rx="9" ry="24" fill="#0f172a"/>
+            <ellipse cx="9" cy="38" rx="6" ry="18" fill="#1e293b"/>
+            <line x1="9" y1="26" x2="9" y2="50" stroke="#cbd5e1" stroke-width="2"/>
+            <line x1="5" y1="38" x2="13" y2="38" stroke="#cbd5e1" stroke-width="2"/>
+          </g>
+
+          <!-- White Hatchback Main Body Shell -->
+          <path d="M 46 62 
+                   C 56 46, 75 34, 102 28 
+                   L 165 24 
+                   C 192 24, 218 36, 230 52 
+                   C 238 62, 243 78, 245 92 
+                   C 246 106, 244 122, 236 136 
+                   C 230 144, 215 147, 185 148 
+                   L 95 148 
+                   C 65 147, 50 144, 44 136 
+                   C 36 122, 34 104, 37 88 
+                   Z" 
+                fill="url(#ioniqWhiteGrad)" 
+                stroke="#cbd5e1" 
+                stroke-width="1.2"/>
+
+          <!-- White Shark Fin Antenna -->
+          <path d="M 140 18 L 143 25 L 137 25 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="0.8"/>
+
+          <!-- Upper Rear Window -->
+          <path d="M 88 30 
+                   L 192 30 
+                   C 214 44, 226 56, 228 62 
+                   L 52 62 
+                   C 54 56, 66 44, 88 30 Z" 
+                fill="url(#smokedWindow)"/>
+          
+          <!-- Sun reflection across window -->
+          <path d="M 96 34 L 145 34 L 115 58 L 75 58 Z" fill="#ffffff" opacity="0.15"/>
+
+          <!-- Integrated Aerodynamic Black Rear Spoiler -->
+          <path d="M 44 60 
+                   L 236 60 
+                   C 238 64, 236 68, 232 70 
+                   L 48 70 
+                   C 44 68, 42 64, 44 60 Z" 
+                fill="#0f172a"/>
+          
+          <!-- Third brake light embedded in spoiler -->
+          <rect x="122" y="63" width="36" height="2.5" rx="1.2" fill="#ef4444" class="taillight-active"/>
+
+          <!-- Lower Window Glass -->
+          <path d="M 50 70 L 230 70 L 225 80 L 55 80 Z" fill="#020617"/>
+
+          <!-- Left Taillight (Angular matching photo) -->
+          <g class="taillight-active">
+            <polygon points="46,80 82,78 72,100 44,88" fill="#7f1d1d" stroke="#1e293b" stroke-width="0.8"/>
+            <path d="M 50 83 L 78 81 L 70 94 Z" fill="#ff2222"/>
+            <path d="M 54 86 L 74 84 L 68 92 Z" fill="#ffffff"/>
+            <polygon points="48,87 62,86 58,92 46,90" fill="#f1f5f9" opacity="0.9"/>
+          </g>
+
+          <!-- Right Taillight (Angular matching photo) -->
+          <g class="taillight-active">
+            <polygon points="234,80 198,78 208,100 236,88" fill="#7f1d1d" stroke="#1e293b" stroke-width="0.8"/>
+            <path d="M 230 83 L 202 81 L 210 94 Z" fill="#ff2222"/>
+            <path d="M 226 86 L 206 84 L 212 92 Z" fill="#ffffff"/>
+            <polygon points="232,87 218,86 222,92 234,90" fill="#f1f5f9" opacity="0.9"/>
+          </g>
+
+          <!-- Tailgate aerodynamic contour line -->
+          <path d="M 76 84 Q 140 100 204 84" fill="none" stroke="#cbd5e1" stroke-width="1.2"/>
+
+          <!-- Chrome Hyundai Oval Logo + Reverse Camera -->
+          <ellipse cx="140" cy="94" rx="7" ry="4.5" fill="none" stroke="url(#chromeEmblem)" stroke-width="1.5"/>
+          <path d="M 137 96 Q 140 92 143 96" fill="none" stroke="url(#chromeEmblem)" stroke-width="1.2"/>
+          <ellipse cx="140" cy="99" rx="1.5" ry="1.5" fill="#0f172a"/>
+
+          <!-- Letterings: 'HYUNDAI' left, 'I O N I Q' center, 'hybrid' right -->
+          <text x="88" y="96" fill="#64748b" font-size="4" font-family="'Space Grotesk', sans-serif" font-weight="700">HYUNDAI</text>
+          <text x="140" y="108" fill="#334155" font-size="5.2" font-family="'Space Grotesk', sans-serif" font-weight="800" text-anchor="middle" letter-spacing="3.5">I O N I Q</text>
+          <text x="194" y="94" fill="#0284c7" font-size="4.5" font-family="'Space Grotesk', sans-serif" font-weight="600" italic>hybrid</text>
+
+          <!-- Two-Tone Rear Bumper / Charcoal Diffuser -->
+          <path d="M 52 114 
+                   C 60 110, 84 108, 140 108 
+                   C 196 108, 220 110, 228 114 
+                   C 234 117, 235 130, 230 138 
+                   C 215 146, 185 147, 140 147 
+                   C 95 147, 65 146, 50 138 
+                   C 45 130, 46 117, 52 114 Z" 
+                fill="url(#diffuserPlastic)" 
+                stroke="#1e293b" 
+                stroke-width="1"/>
+
+          <!-- Vertical Red Reflectors on Diffuser -->
+          <rect x="58" y="118" width="3" height="14" rx="1" fill="#dc2626" stroke="#991b1b" stroke-width="0.5"/>
+          <rect x="219" y="118" width="3" height="14" rx="1" fill="#dc2626" stroke="#991b1b" stroke-width="0.5"/>
+
+          <!-- License Plate Illumination Bar -->
+          <rect x="132" y="111" width="16" height="2" rx="0.5" fill="#f8fafc" opacity="0.8"/>
+
+          <!-- LICENSE PLATE: Josslong / Mi amor / Mi Navita / 25012024 -->
+          <g id="svg-plate-group" class="cursor-pointer" onclick="nextPlate()">
+            <rect x="105" y="116" width="70" height="16" rx="2" fill="#ffffff" stroke="#000000" stroke-width="1"/>
+            <!-- Blue Band -->
+            <rect x="105" y="116" width="6" height="16" rx="1" fill="#003399"/>
+            <circle cx="108" cy="120" r="1.5" fill="none" stroke="#fbbf24" stroke-width="0.4" stroke-dasharray="0.8,0.5"/>
+            <text x="108" y="129" fill="#ffffff" font-size="3" font-family="'Space Grotesk', sans-serif" font-weight="bold" text-anchor="middle">⚡</text>
+            <!-- Plate Text -->
+            <text id="plate-svg-text" x="142" y="128" fill="#000000" font-size="${plateText.length > 8 ? '6.5' : '7.8'}" font-family="'Space Grotesk', sans-serif" font-weight="800" text-anchor="middle" letter-spacing="${plateText.length > 8 ? '0.2' : '1'}">${plateText}</text>
+          </g>
+
+          <!-- Parking Sensor Points -->
+          <circle cx="94" cy="126" r="1" fill="#0f172a"/>
+          <circle cx="186" cy="126" r="1" fill="#0f172a"/>
+
+          <!-- Wheel arch body contour -->
+          <path d="M 230 78 C 242 94, 240 120, 230 134" fill="none" stroke="#e2e8f0" stroke-width="1.2"/>
+        </svg>
+      `;
+    }
+
+    function renderBouquetFlowers(triggerAnimation = false) {
+      const container = document.getElementById('flower-cluster');
+      if (!container) return;
+
+      const theme = FLOWER_THEMES[flowerThemeIndex];
+      const badge = document.getElementById('flower-theme-badge');
+      if (badge) badge.innerText = theme.name;
+
+      const aura = document.getElementById('ambient-aura');
+      if (aura) aura.style.backgroundColor = theme.auraColor;
+
+      const positions = [
+        { top: '8px', left: '26%', size: '3.4rem', rot: '-12deg', delay: '0.05s' },
+        { top: '4px', left: '50%', size: '3.9rem', rot: '4deg', delay: '0.1s' },
+        { top: '10px', left: '74%', size: '3.4rem', rot: '15deg', delay: '0.15s' },
+        { top: '50px', left: '16%', size: '3.5rem', rot: '-20deg', delay: '0.08s' },
+        { top: '46px', left: '38%', size: '3.6rem', rot: '-5deg', delay: '0.12s' },
+        { top: '44px', left: '62%', size: '3.6rem', rot: '8deg', delay: '0.18s' },
+        { top: '56px', left: '84%', size: '3.3rem', rot: '20deg', delay: '0.22s' },
+        { top: '98px', left: '30%', size: '3.5rem', rot: '-8deg', delay: '0.14s' },
+        { top: '95px', left: '52%', size: '3.8rem', rot: '2deg', delay: '0.2s' },
+        { top: '102px', left: '74%', size: '3.4rem', rot: '12deg', delay: '0.25s' },
+        { top: '142px', left: '42%', size: '3.3rem', rot: '-6deg', delay: '0.16s' },
+        { top: '146px', left: '62%', size: '3.3rem', rot: '10deg', delay: '0.24s' }
+      ];
+
+      let html = '';
+      positions.forEach((pos, idx) => {
+        const icon = (idx % 4 === 0) ? theme.accentEmoji : theme.primaryEmoji;
+        const animClass = triggerAnimation ? 'flower-bloom' : '';
+        html += `
+          <div class="absolute select-none pointer-events-none transform transition-transform hover:scale-110 duration-300 drop-shadow-[0_6px_8px_rgba(0,0,0,0.85)] ${animClass}" 
+               style="top: ${pos.top}; left: ${pos.left}; font-size: ${pos.size}; transform: translate(-50%, 0) rotate(${pos.rot}); z-index: 5; animation-delay: ${pos.delay};">
+            ${icon}
+          </div>
+        `;
+      });
+
+      // Extra greenery and foliage accents
+      html += `
+        <div class="absolute top-10 left-5 text-3xl transform -rotate-45 opacity-80 pointer-events-none">🌿</div>
+        <div class="absolute top-6 right-6 text-3xl transform rotate-45 opacity-80 pointer-events-none">🍃</div>
+        <div class="absolute top-26 right-8 text-2xl transform rotate-20 opacity-80 pointer-events-none">🌿</div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function renderIoniqs() {
+      const cluster = document.getElementById('ioniq-cluster');
+      if (!cluster) return;
+
+      const currentPlate = USER_PLATES[plateIndex];
+      document.getElementById('current-plate-text').innerText = currentPlate;
+
+      const layouts = [
+        { top: '18%', left: '50%', scale: 1.05, rot: '1deg', stickH: '170px' },
+        { top: '44%', left: '72%', scale: 0.95, rot: '12deg', stickH: '145px' }
+      ];
+
+      let html = '';
+      layouts.forEach((layout, idx) => {
+        html += `
+          <div class="absolute flex flex-col items-center pointer-events-auto cursor-pointer group"
+               style="top: ${layout.top}; left: ${layout.left}; transform: translate(-50%, 0) rotate(${layout.rot}) scale(${layout.scale}); z-index: ${20 + idx};"
+               onclick="tapCar(${idx})"
+               id="car-unit-${idx}">
+            
+            <div class="w-44 sm:w-48 transition-transform duration-200 group-hover:scale-108 active:scale-95" id="ioniq-car-svg-${idx}">
+              ${getHyundaiIoniqSVG(currentPlate)}
+              <!-- Wood stick fastener craft pin -->
+              <div class="w-3 h-3 rounded-full bg-cyan-400 border border-slate-900 mx-auto -mt-1 shadow-md"></div>
+            </div>
+
+            <!-- Wooden Skewer / Craft Stick -->
+            <div class="w-1.5 bg-gradient-to-r from-amber-700 via-amber-200 to-amber-800 rounded-sm shadow-md border-x border-amber-900/60"
+                 style="height: ${layout.stickH};"></div>
+          </div>
+        `;
+      });
+
+      cluster.innerHTML = html;
+    }
+
+    function nextPlate() {
+      plateIndex = (plateIndex + 1) % USER_PLATES.length;
+      const newPlate = USER_PLATES[plateIndex];
+
+      const plateLabel = document.getElementById('current-plate-text');
+      if (plateLabel) {
+        plateLabel.classList.add('plate-flip');
+        setTimeout(() => plateLabel.classList.remove('plate-flip'), 500);
+      }
+
+      renderIoniqs();
+      playRomanticHorn();
+      showSpeech(`🏷️ ¡Placa cambiada a: "${newPlate}"!`);
+    }
+
+    function tapCar(index) {
+      playHybridAccelerationSound();
+      
+      const carElem = document.getElementById(`ioniq-car-svg-${index}`);
+      if (carElem) {
+        carElem.classList.add('car-jump');
+        setTimeout(() => carElem.classList.remove('car-jump'), 550);
+      }
+
+      const quote = COPILOT_MESSAGES[Math.floor(Math.random() * COPILOT_MESSAGES.length)];
+      showSpeech(quote);
+
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 25,
+          spread: 45,
+          origin: { y: 0.5, x: 0.5 },
+          colors: ['#00f0ff', '#ffffff', '#ef4444', '#f59e0b']
+        });
+      }
+    }
+
+    function tapPolaroid() {
+      playRomanticHorn();
+      showSpeech("📸 ¡Tú y Yo! Mi copiloto favorito por siempre ❤️");
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 30,
+          spread: 50,
+          origin: { y: 0.6, x: 0.3 },
+          colors: ['#f43f5e', '#fbbf24', '#ffffff']
+        });
+      }
+    }
+
+    function showSpeech(text) {
+      const bubble = document.getElementById('speech-bubble');
+      const speech = document.getElementById('speech-text');
+      if (bubble && speech) {
+        speech.innerText = text;
+        bubble.classList.remove('scale-0');
+        bubble.classList.add('scale-100');
+        clearTimeout(window.bubbleTimer);
+        window.bubbleTimer = setTimeout(() => {
+          bubble.classList.remove('scale-100');
+          bubble.classList.add('scale-0');
+        }, 3400);
+      }
+    }
+
+    /* THE REQUESTED "¡Sorpréndeme! ✨" ACTION: TRANSFORMS FLOWERS + CYCLES PLATES + AUDIO + CONFETTI */
+    function triggerSurpriseEffect() {
+      // 1. Audio cues
+      playHybridAccelerationSound();
+      setTimeout(playRomanticHorn, 280);
+
+      // 2. Cycle to the next flower theme
+      flowerThemeIndex = (flowerThemeIndex + 1) % FLOWER_THEMES.length;
+      const currentFlower = FLOWER_THEMES[flowerThemeIndex];
+      renderBouquetFlowers(true);
+
+      // 3. Cycle license plate
+      plateIndex = (plateIndex + 1) % USER_PLATES.length;
+      renderIoniqs();
+
+      // 4. Update floating ambient petals color
+      updatePetalColors(currentFlower.petalColor);
+
+      // 5. Show loving message
+      showSpeech(currentFlower.tagline);
+
+      // 6. Confetti burst matching current flower theme colors
+      if (window.confetti) {
+        const count = 90;
+        const defaults = { origin: { y: 0.65 } };
+
+        window.confetti(Object.assign({}, defaults, {
+          particleCount: Math.floor(count * 0.4),
+          spread: 40,
+          startVelocity: 50,
+          colors: currentFlower.confettiColors
+        }));
+
+        window.confetti(Object.assign({}, defaults, {
+          particleCount: Math.floor(count * 0.6),
+          spread: 90,
+          decay: 0.92,
+          scalar: 1.1,
+          colors: [...currentFlower.confettiColors, '#00f0ff']
+        }));
+      }
+    }
+
+    /* AMBIENT FLOATING FLOWER PETALS CANVAS */
+    const canvas = document.getElementById('petals-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class AmbientPetal {
+      constructor(color = '#f43f5e') {
+        this.color = color;
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = -20;
+        this.size = Math.random() * 5 + 3.5;
+        this.speedY = Math.random() * 0.75 + 0.35;
+        this.speedX = (Math.random() - 0.5) * 0.7;
+        this.rot = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 1.6;
+        this.opacity = Math.random() * 0.45 + 0.2;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.rot += this.rotSpeed;
+        if (this.y > canvas.height + 20) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rot * Math.PI) / 180);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, this.size, this.size * 0.65, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function updatePetalColors(newColor) {
+      particles.forEach(p => {
+        p.color = newColor;
+      });
+    }
+
+    for (let i = 0; i < 28; i++) {
+      particles.push(new AmbientPetal(FLOWER_THEMES[0].petalColor));
+    }
+
+    function animateAmbient() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateAmbient);
+    }
+    animateAmbient();
+
+    window.onload = function() {
+      renderBouquetFlowers();
+      renderIoniqs();
+    };
+  </script>
+</body>
+</html>
