@@ -106,43 +106,43 @@
     }
 
     /* =========================================================
-       AJUSTES PARA CELULAR: FOTO Y PALITOS DESPEJADOS
-       ========================================================= */
+    AJUSTES PARA CELULAR: FOTO, PALITOS Y BOTÓN VISIBLE
+    ========================================================= */
     @media (max-width: 600px) {
-      /* 1. Oculta los palos de brocheta para que no crucen las frases */
-      [class*="amber-"], 
-      [class*="stick"], 
-      .skewer {
-        display: none !important;
-      }
-
-      /* 4. Asegura que el papel negro y las frases queden al frente */
-      #bouquet-paper {
-        position: relative !important;
-        z-index: 30 !important;
-      }
+    /* 1. Oculta los palos de brocheta usando sus IDs sin tocar colores */
+    #car-stick-1,
+    #car-stick-2,
+    .skewer-stick,
+    .skewer-line {
+    display: none !important;
+    }
     
-    /* RESCATE DEL BOTÒN */
-    #btn-surprise,
-    button[onclick*="surprise"],
-    button:has(.fa-wand-magic-sparkles),
-    .btn-magic {
-    display: flex !important;
+    /* 2. Asegura que el papel negro y frases queden al frente */
+    #bouquet-paper {
+    position: relative !important;
+    z-index: 30 !important;
+    }
+    
+    /* 3. RESCATE DEL BOTÓN: Forzado a mostrarse y con margen */
+    button {
+    display: inline-flex !important;
     visibility: visible !important;
     opacity: 1 !important;
     position: relative !important;
-    z-index: 9999 !important;
-    margin: 18px auto 45px auto !important; /* Margen inferior extra para que la barra del iPhone no lo tape */
-    max-width: 90% !important;
+    z-index: 99999 !important;
+    margin: 20px auto 60px auto !important;
     }
-
+    }
+    
+    /* 4. Permite deslizar libremente en la pantalla del celular */
     html, body {
     height: auto !important;
     min-height: 100vh !important;
     overflow-y: auto !important;
-    padding-bottom: 80px !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 90px !important;
     }
-    
+
           
   </style>
 
